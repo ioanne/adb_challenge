@@ -5,7 +5,7 @@ services:
     network_mode: host
     build:
         context: .
-        dockerfile: Dockerfile_
+        dockerfile: Dockerfile
     container_name: web_apptim
     command: tail -F app
     volumes:
