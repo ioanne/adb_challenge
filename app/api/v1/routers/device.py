@@ -57,7 +57,7 @@ class DeviceViews:
     async def get_logs(self, device_serial: str):
         """Endpoint to get logs inside a device by serial."""
         device = self._get_device(device_serial)
-        return device.get_log()
+        return {'logs': device.get_log()}
 
     @router.post("/device/{device_serial}/open_app/")
     async def open_app(self, device_serial: str, android_app: AndroidApp):
