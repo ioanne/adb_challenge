@@ -3,10 +3,11 @@ version: '3.8'
 services:
   web_apptim:
     network_mode: host
+    restart: always
     build:
         context: .
         dockerfile: Dockerfile
     container_name: web_apptim
-    command: tail -F app
+    command: uvicorn app.api.v1.main:app --reload --workers 1 --host 0.0.0.0 --port 8888
     volumes:
-      - .:/usr/src/app
+      - ./app:/app/

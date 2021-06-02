@@ -1,1 +1,4 @@
 pure-python-adb==0.3.0.dev0
+fastapi==0.65.1
+uvicorn==0.13.4
+fastapi-utils==0.2.1
