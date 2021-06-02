@@ -3,10 +3,15 @@ from fastapi import HTTPException
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from starlette.responses import StreamingResponse
+from pydantic import BaseModel
 
 from app.services.adb.client.powered_client import get_adb_client
 
 router = InferringRouter()
+
+
+class AndroidApp(BaseModel):
+    app_id: str
 
 
 @cbv(router)
@@ -42,3 +47,11 @@ class DeviceViews:
     async def get_logs(self, device_serial: str):
         device = self._get_device(device_serial)
         return device.get_log()
+
+    @router.post("/device/{device_serial}/open_app/")
+    async def open_app(self, device_serial: str, android_app: AndroidApp):
+        device = self._get_device(device_serial)
+        message = device.open_app(android_app.app_id)
+        if 'Error type' in message:
+            raise HTTPException(status_code=406, detail=message)
+        return {}
