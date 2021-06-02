@@ -4,7 +4,7 @@ from ppadb.device import Device
 
 from datetime import datetime
 
-logger = logging.get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class PoweredDevice(Device):
