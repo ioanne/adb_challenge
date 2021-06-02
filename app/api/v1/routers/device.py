@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 
@@ -16,3 +17,10 @@ class DeviceViews:
     @router.get("/devices/")
     async def get_devices(self):
         return self.client.devices() or []
+
+    @router.get("/device/{device_serial}/")
+    async def get_device(self, device_serial: str):
+        device = self.client.device(device_serial)
+        if not device:
+            raise HTTPException(status_code=404, detail='Device not found.')
+        return device
