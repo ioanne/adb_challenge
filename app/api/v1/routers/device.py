@@ -14,6 +14,10 @@ class AndroidApp(BaseModel):
     app_id: str
 
 
+class InstallAppData(BaseModel):
+    path: str
+
+
 @cbv(router)
 class DeviceViews:
 
@@ -55,3 +59,12 @@ class DeviceViews:
         if 'Error type' in message:
             raise HTTPException(status_code=406, detail=message)
         return {}
+
+    @router.post("/device/{device_serial}/install/")
+    async def install_apk(self, device_serial: str, install_app_data: InstallAppData):
+        device = self._get_device(device_serial)
+        try:
+            was_installed = device.install(install_app_data.path)
+        except IOError:
+            raise HTTPException(status_code=406, detail='Cannot find path.')
+        return was_installed
