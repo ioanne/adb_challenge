@@ -37,3 +37,8 @@ class DeviceViews:
         if screen:
             return StreamingResponse(io.BytesIO(screen), media_type="image/png")
         return {}
+
+    @router.get("/device/{device_serial}/logs/")
+    async def get_logs(self, device_serial: str):
+        device = self._get_device(device_serial)
+        return device.get_log()
